@@ -93,19 +93,17 @@ def processHtml(html, country_dict):
     soup = BeautifulSoup(article, "lxml")
     text = soup.text
     print(title, text)
-    print("reach here 0")
     # do not consider small document
     if len(text) < 500:
         return False
-    print("reach here 1")
 
     # convert to lower case & tokenize web page brands
     tokens = nltk.word_tokenize(text.lower())
     # remove all stop words
     filtered = [w for w in tokens if w not in stopwords.words('english')]
 
-    is_title_relevant = False
     # check keyword in title
+    is_title_relevant = False
     print(title.lower())
     for word in brandList:
         if word in title.lower():
@@ -115,7 +113,6 @@ def processHtml(html, country_dict):
     if not is_title_relevant:
         return False
 
-    print("reach here 2")
     # compute document relevance
     score = 0
     for word in filtered:
@@ -143,20 +140,21 @@ def processHtml(html, country_dict):
     # compute brand % over all brand counts
     for brand in brandList:
         brand_count = 0
-        for token in tokens:
-            if brand == token:
+        for word in filtered:
+            if brand in word:
                 brand_count += 1
         brand_dict[brand] = brand_count
         total_count += brand_count
 
     # compute contribution for each brand to the country domain
     for brand, count in brand_dict.items():
-        brand_dict[brand] = count/total_count
+        brand_dict[brand] = float(count)/total_count
 
-    for brand, count in brand_dict.items():
-        if brand in country_dict.keys():
-            country_dict[brand] = country[brand] + weight * brand_dict[brand]
-        country_dict[brand] = weight * brand_dict[brand]
+    for brand, percentage in brand_dict.items():
+        if brand in country_dict:
+            country_dict[brand] += weight * percentage
+        else:
+            country_dict[brand] = weight * percentage
 
     return True
 
@@ -166,3 +164,4 @@ for baseURL in baseURLs:
     crawler(country)
 print(visited)
 print(relevant)
+print(country)
