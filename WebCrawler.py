@@ -1,6 +1,7 @@
 import nltk
 import socket
 import urlparse
+from threading import Thread
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from readability.readability import Document
@@ -9,7 +10,8 @@ from readability.readability import Document
 urlList = []
 visited = []
 relevant = []
-THRESHOLD = 5
+threadList = []
+THRESHOLD = 50
 
 # brand dictionary of a particular country
 country = {}
@@ -161,7 +163,13 @@ def processHtml(html, country_dict):
 
 for baseURL in baseURLs:
     urlList.append(baseURL)
-    crawler(country)
+    t = Thread(target=crawler, args=(country,))
+    t.start()
+    threadList.append(t)
+    print(len(threadList))
+
+for b in threadList:
+    b.join()
 print(visited)
 print(relevant)
 print(country)
