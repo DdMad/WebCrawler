@@ -10,7 +10,8 @@ from readability.readability import Document
 
 
 class WebCrawler:
-    THRESHOLD = 5
+    PAGE_TO_CRAWL = 1
+    PAGE_LENGTH_LIMIT = 100
 
     brandList = open("brands", "r").read().split(",")
     # read in all the keywords for judge a web site as relevant
@@ -34,8 +35,6 @@ class WebCrawler:
             t = Thread(target=self.crawler)
             t.start()
             self.threadList.append(t)
-
-        print(len(self.threadList))
 
         for b in self.threadList:
             b.join()
@@ -85,7 +84,7 @@ class WebCrawler:
 
     #  simple web crawler
     def crawler(self):
-        while len(self.urlList) > 0 and len(self.relevant) < WebCrawler.THRESHOLD:
+        while len(self.urlList) > 0 and len(self.relevant) < WebCrawler.PAGE_TO_CRAWL:
             url = self.urlList.pop(0)
             if url not in self.visited:
                 self.visited.append(url)
@@ -94,8 +93,6 @@ class WebCrawler:
                     ipw = IPWhois(ip_address)
                     region = ipw.lookup()['asn_country_code']
                     print region + ":" + str(url)
-                    print "region to crawl: " + region
-                    print(region)
                     if True or region == self.country:
                         web_page = WebCrawler.geturl(url)
                         html = web_page[0]
@@ -126,12 +123,18 @@ class WebCrawler:
         title = Document(html_body).title()
         # parse web page article
         soup = BeautifulSoup(article, "lxml")
-        text = soup.text
-        print "Title: " + title + "Content: " + text
+        text = soup.getText()
+        print "Title: " + title + "\nContent: " + text
 
+        '''
+        adjust these values
+        '''
         # ignore small document
-        if len(text) < 500:
+        if len(text) < WebCrawler.PAGE_LENGTH_LIMIT:
             return False
+        '''
+        end
+        '''
 
         # convert to lower case & tokenize web page content
         tokens = nltk.word_tokenize(text.lower())
@@ -148,13 +151,16 @@ class WebCrawler:
         if not is_title_relevant:
             return False
 
+        '''
+        adjust these values
+        '''
         # compute document relevance
         score = 0
         for word in filtered:
             if word in WebCrawler.brandList:
-                score += 10
+                score += 40
             if word in WebCrawler.keywordList:
-                score += 5
+                score += 20
         print("Score: " + str(score))
 
         # assign weight to document based on score
@@ -170,6 +176,9 @@ class WebCrawler:
         else:
             weight = 500
         print("Page Relevance: " + str(weight))
+        '''
+        end
+        '''
 
         brand_dict = {}
         total_count = 0
