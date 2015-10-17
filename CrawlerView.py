@@ -42,9 +42,9 @@ class App:
             if result:
                 for bd in range(9):
                     if result[brand[bd]]:
-                        self.setTableCell(country+1, bd+1, float("{0:.2f}".format(result[brand[bd]])))
+                        self.setTableCell(country+2, bd+1, float("{0:.2f}".format(result[brand[bd]])))
                     else:
-                        self.setTableCell(country+1, bd+1, 0)
+                        self.setTableCell(country+2, bd+1, 0)
         # crawler = WebCrawler.WebCrawler("ukurl")
         # crawler.crawl()
         # result = crawler.get_brand_score()
