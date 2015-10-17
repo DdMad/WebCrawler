@@ -33,30 +33,30 @@ class App:
 
     def start(self):
         print "Start Crawling!"
-        #self.setTableCell(4, 4, "test")
-        # for country in range(6):
-        #     crawler = WebCrawler.WebCrawler(url[country])
-        #     crawler.crawl()
-        #     result = crawler.get_brand_score()
+        self.setTableCell(4, 4, "test")
+        for country in range(6):
+            crawler = WebCrawler.WebCrawler(url[country])
+            crawler.crawl()
+            result = crawler.get_brand_score()
+
+            if result:
+                for bd in range(9):
+                    if result[brand[bd]]:
+                        self.setTableCell(country+1, bd+1, float("{0:.2f}".format(result[brand[bd]])))
+                    else:
+                        self.setTableCell(country+1, bd+1, 0)
+        # crawler = WebCrawler.WebCrawler("ukurl")
+        # crawler.crawl()
+        # result = crawler.get_brand_score()
         #
-        #     if result:
-        #         for bd in range(9):
-        #             if result[brand[bd]]:
-        #                 self.setTableCell(country+1, bd+1, result[brand[bd]])
-        #             else:
-        #                 self.setTableCell(country+1, bd+1, 0)
-        crawler = WebCrawler.WebCrawler("ukurl")
-        crawler.crawl()
-        result = crawler.get_brand_score()
+        # print result
 
-        print result
-
-        if result:
-            for bd in range(9):
-                if result[brand[bd]]:
-                    self.setTableCell(2, bd+1, float("{0:.2f}".format(result[brand[bd]])))
-                else:
-                    self.setTableCell(2, bd+1, 0)
+        # if result:
+        #     for bd in range(9):
+        #         if result[brand[bd]]:
+        #             self.setTableCell(2, bd+1, float("{0:.2f}".format(result[brand[bd]])))
+        #         else:
+        #             self.setTableCell(2, bd+1, 0)
 
 
     def export(self):
