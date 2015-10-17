@@ -54,9 +54,9 @@ class App:
         if result:
             for bd in range(9):
                 if result[brand[bd]]:
-                    self.setTableCell(1, bd+1, result[brand[bd]])
+                    self.setTableCell(2, bd+1, float("{0:.2f}".format(result[brand[bd]])))
                 else:
-                    self.setTableCell(1, bd+1, 0)
+                    self.setTableCell(2, bd+1, 0)
 
 
     def export(self):
