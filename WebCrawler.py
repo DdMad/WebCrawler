@@ -95,8 +95,8 @@ class WebCrawler:
                     region = ipw.lookup()['asn_country_code']
                     print region + ":" + str(url)
                     print "region to crawl: " + region
-                    print(region == self.country)
-                    if region == self.country:
+                    print(region)
+                    if True or region == self.country:
                         web_page = WebCrawler.geturl(url)
                         html = web_page[0]
                         rtt = web_page[1]
