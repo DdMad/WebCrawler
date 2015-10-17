@@ -33,7 +33,7 @@ class App:
 
     def start(self):
         print "Start Crawling!"
-        self.setTableCell(4, 4, "test")
+        # self.setTableCell(4, 4, "test")
         for country in range(6):
             crawler = WebCrawler.WebCrawler(url[country])
             crawler.crawl()
