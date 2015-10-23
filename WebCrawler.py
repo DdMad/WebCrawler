@@ -2,6 +2,7 @@ import nltk
 import time
 import socket
 import urlparse
+import traceback
 from bs4 import BeautifulSoup
 from ipwhois import IPWhois
 from threading import Thread
@@ -61,6 +62,7 @@ class WebCrawler:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # allow socket reuse
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.settimeout(None)
 
         s.connect((address, port))
         # measure response time
@@ -113,6 +115,7 @@ class WebCrawler:
                                 new_url = "http://" + host + path
                                 self.urlList.append(new_url)
                 except:
+                    print(traceback.format_exc())
                     print "ERROR when dealing with: " + str(url)
 
     def processHtml(self, html):
