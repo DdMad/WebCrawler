@@ -20,6 +20,9 @@ class App:
         export = Button(master, text="Export", command=self.export)
         export.grid(row=0, column=1)
 
+        clear = Button(master, text="Clear", command=self.clear)
+        clear.grid(row=0, column=2)
+
         for column in range(columns):
             title = Label(master, text=titles[column], borderwidth=1)
             title.grid(row=1, column=column, sticky="nsew", padx=1, pady=1)
@@ -28,13 +31,15 @@ class App:
             content = Label(master, text=countries[row], borderwidth=1)
             content.grid(row=2+row, column=0, sticky="nsew", padx=1, pady=1)
 
+        self.clear()
+
     def setTableCell(self, row, column, score):
         cell = Label(self.root, text=score)
         cell.grid(row=row, column=column, sticky="nsew", padx=1, pady=1)
 
     def start(self):
         print "Start Crawling!"
-        for country in range(6):
+        for country in range(4):
             print("######################### " + url[country] + " #########################")
             crawler = WebCrawler.WebCrawler(url[country])
             crawler.crawl()
@@ -61,6 +66,12 @@ class App:
 
     def export(self):
         print "Export!"
+
+    def clear(self):
+        for country in range(6):
+            for bd in range(9):
+                self.setTableCell(country+2, bd+1, 0)
+
 
 root = Tk()
 root.title("Web Crawler")
