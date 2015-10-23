@@ -7,6 +7,7 @@ countries = ['UK', 'US', 'Singapore', 'India', 'Canada', 'Australia']
 brand = ['iphone', 'samsung', 'nexus', 'lumia', 'htc', 'sony', 'lg', 'xiaomi', 'huawei']
 url = ['ukurl', 'usurl', 'sgurl', 'inurl', 'caurl', 'auurl']
 
+
 class App:
 
     def __init__(self, master, rows=6, columns=10):
@@ -33,8 +34,8 @@ class App:
 
     def start(self):
         print "Start Crawling!"
-        # self.setTableCell(4, 4, "test")
         for country in range(6):
+            print("######################### " + url[country] + " #########################")
             crawler = WebCrawler.WebCrawler(url[country])
             crawler.crawl()
             result = crawler.get_brand_score()
@@ -57,7 +58,6 @@ class App:
         #             self.setTableCell(2, bd+1, float("{0:.2f}".format(result[brand[bd]])))
         #         else:
         #             self.setTableCell(2, bd+1, 0)
-
 
     def export(self):
         print "Export!"
