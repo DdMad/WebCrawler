@@ -92,10 +92,10 @@ class WebCrawler:
                 self.visited.append(url)
                 try:
                     ip_address = socket.gethostbyname(urlparse.urlparse(url).hostname)
-                    ipw = IPWhois(ip_address)
-                    region = ipw.lookup()['asn_country_code']
-                    print region + ":" + str(url)
-                    if True or region == self.country:
+                    #ipw = IPWhois(ip_address)
+                    #region = ipw.lookup()['asn_country_code']
+                    print str(url)
+                    if True:
                         web_page = WebCrawler.geturl(url)
                         html = web_page[0]
                         rtt = web_page[1]
