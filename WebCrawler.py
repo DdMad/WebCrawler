@@ -1,3 +1,4 @@
+import csv
 import nltk
 import time
 import socket
@@ -12,9 +13,9 @@ from readability.readability import Document
 
 
 class WebCrawler:
-    PAGE_TO_CRAWL = 6
+    PAGE_TO_CRAWL = 10
     PAGE_LENGTH_LIMIT = 100
-    BACKUP_THRESHOLD = 2
+    BACKUP_THRESHOLD = 5
 
     # read in all the brands provided
     brandList = open("brands", "r").read().split(",")
@@ -43,7 +44,6 @@ class WebCrawler:
         for b in self.threadList:
             b.join()
 
-        print "Visited URLs:" + str(self.visited)
         print str(len(self.relevant)) + " Relevant URLs:" + str(self.relevant)
         print(self.brand_score)
 
@@ -234,3 +234,8 @@ class WebCrawler:
 
     def write_files(self, country):
         self.backup(country)
+
+    def write_score(self, country):
+        s = csv.writer(open(str(country) + "_Score.txt", "w"))
+        for brand in self.brand_score:
+            s.writerow([brand, self.brand_score[brand]])
