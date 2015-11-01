@@ -59,9 +59,9 @@ class App:
             crawler.write_files(countries[country])
             result = crawler.get_brand_score()
 
-            self.crawlers[country] = crawler;
+            self.crawlers[country] = crawler
 
-            sum = 0;
+            sum = 0
 
             if result:
                 for bd in range(BRAND_AMOUNT):
