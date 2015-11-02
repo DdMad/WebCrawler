@@ -13,9 +13,9 @@ from readability.readability import Document
 
 
 class WebCrawler:
-    PAGE_TO_CRAWL = 10
+    PAGE_TO_CRAWL = 10000
     PAGE_LENGTH_LIMIT = 100
-    BACKUP_THRESHOLD = 5
+    BACKUP_THRESHOLD = 1000
 
     # read in all the brands provided
     brandList = open("brands", "r").read().split(",")
@@ -44,8 +44,8 @@ class WebCrawler:
         for b in self.threadList:
             b.join()
 
-        print str(len(self.relevant)) + " Relevant URLs:" + str(self.relevant)
-        print(self.brand_score)
+        #print str(len(self.relevant)) + " Relevant URLs:" + str(self.relevant)
+        #print(self.brand_score)
 
     # fetch html file of a given URL and measure the response time
     @staticmethod
@@ -134,7 +134,7 @@ class WebCrawler:
                                 self.urlList.append(new_url)
                 except:
                     print "ERROR when dealing with: " + str(url)
-                    print(traceback.format_exc())
+                    #print(traceback.format_exc())
 
     # return True if the web page is regarded as relevant
     def processHtml(self, html):
@@ -234,6 +234,11 @@ class WebCrawler:
 
     def write_files(self, country):
         self.backup(country)
+
+    def write_relevant_link(self, country):
+        r = open(str(country) + "_Relevant.txt", "w")
+        r.writelines(["%s\n" % link for (link, rtt) in self.relevant])
+        r.close()
 
     def write_score(self, country):
         s = csv.writer(open(str(country) + "_Score.txt", "w"))
